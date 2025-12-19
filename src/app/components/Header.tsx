@@ -218,7 +218,7 @@ export function Header({
                 initial={{ opacity: 0 }}
                 whileHover={{ opacity: 1 }}
               />
-              <span className="relative z-10">Privacy</span>
+              {/* <span className="relative z-10">Privacy</span> */}
             </motion.button>
 
             <motion.button

@@ -1,13 +1,34 @@
 import { motion } from 'motion/react';
-import { Zap, Clock, Shield, TrendingUp, ArrowRight, Building2, DollarSign, Users, Globe, BarChart3, Award, CheckCircle2 } from 'lucide-react';
+import { Zap, Clock, Shield, TrendingUp, ArrowRight, Building2, DollarSign, Users, Globe, BarChart3, Award, CheckCircle2, Mail, User } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import vend1Image from '@/assets/vend1.png';
+import { useState } from 'react';
 
 interface HomePageProps {
   onNavigate: (page: string) => void;
 }
 
 export function HomePage({ onNavigate }: HomePageProps) {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: ''
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission
+    console.log('Marketing form submitted:', formData);
+    // Reset form
+    setFormData({ firstName: '', lastName: '', email: '' });
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
   const features = [
     {
       icon: Clock,
@@ -142,7 +163,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 Enterprise-grade automated vending solutions delivering consistent quality and operational efficiency. Transform your food service operations with cutting-edge technology.
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 mb-8">
                 <motion.button
                   whileHover={{ 
                     scale: 1.02,
@@ -168,6 +189,86 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   Schedule Demo
                 </motion.button>
               </div>
+
+              {/* Marketing Form */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <form onSubmit={handleSubmit} className="bg-white border-2 border-slate-200 rounded-xl p-6 shadow-lg">
+                  <div className="flex flex-col sm:flex-row gap-4 items-end">
+                    <div className="flex-1 min-w-0">
+                      <label htmlFor="firstName" className="block text-sm font-medium text-slate-700 mb-2">
+                        First Name
+                      </label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input
+                          type="text"
+                          id="firstName"
+                          name="firstName"
+                          value={formData.firstName}
+                          onChange={handleChange}
+                          required
+                          className="w-full pl-10 pr-4 py-3 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-600 transition-colors text-slate-900 placeholder-slate-400"
+                          placeholder="John"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <label htmlFor="lastName" className="block text-sm font-medium text-slate-700 mb-2">
+                        Last Name
+                      </label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input
+                          type="text"
+                          id="lastName"
+                          name="lastName"
+                          value={formData.lastName}
+                          onChange={handleChange}
+                          required
+                          className="w-full pl-10 pr-4 py-3 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-600 transition-colors text-slate-900 placeholder-slate-400"
+                          placeholder="Doe"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+                        Email Address
+                      </label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                          className="w-full pl-10 pr-4 py-3 border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-600 transition-colors text-slate-900 placeholder-slate-400"
+                          placeholder="john@company.com"
+                        />
+                      </div>
+                    </div>
+
+                    <motion.button
+                      type="submit"
+                      whileHover={{ 
+                        scale: 1.02,
+                        boxShadow: '0 10px 30px rgba(37, 99, 235, 0.3)'
+                      }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-8 py-3 bg-blue-600 text-white rounded-lg shadow-lg shadow-blue-600/20 font-semibold hover:bg-blue-700 transition-colors whitespace-nowrap"
+                    >
+                      Get Started
+                    </motion.button>
+                  </div>
+                </form>
+              </motion.div>
             </motion.div>
 
             {/* Right Content - Machine Image */}
