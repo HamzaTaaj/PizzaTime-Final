@@ -1,6 +1,5 @@
 import { motion } from 'motion/react';
 import { Clock, DollarSign, TrendingUp, Shield, Zap, Users, CheckCircle2, ArrowRight } from 'lucide-react';
-import { fadeInUp, staggerContainer, viewportConfig } from '../utils/animations';
 
 interface WhyPizzaAnytimePageProps {
   onNavigate: (page: string) => void;
@@ -71,15 +70,15 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
         {/* Curved Bottom Wave Design */}
         <div className="absolute bottom-0 left-0 right-0 z-0">
           <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#ffffff" />
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#ffffff"/>
           </svg>
         </div>
-
+        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
           <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full mb-6">
               <CheckCircle2 className="w-4 h-4 text-blue-600" />
@@ -100,22 +99,19 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
         {/* Curved Top Wave Design */}
         <div className="absolute top-0 left-0 right-0 z-0">
           <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#f8fafc" />
+            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#f8fafc"/>
           </svg>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-            variants={staggerContainer}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {reasons.map((reason, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
-                whileHover={{
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ 
                   y: -4,
                   borderColor: '#2563eb'
                 }}
@@ -133,7 +129,7 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
                 <p className="text-slate-600 leading-relaxed">{reason.description}</p>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -142,22 +138,21 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
         {/* Curved Top Wave Design */}
         <div className="absolute top-0 left-0 right-0 z-0">
           <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#ffffff" />
+            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#ffffff"/>
           </svg>
         </div>
         {/* Curved Bottom Wave Design */}
         <div className="absolute bottom-0 left-0 right-0 z-0">
           <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#ffffff" />
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#ffffff"/>
           </svg>
         </div>
-
+        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-            variants={fadeInUp}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl mb-4 font-bold text-slate-900">
@@ -168,17 +163,14 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
             </p>
           </motion.div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-            variants={staggerContainer}
-            className="grid md:grid-cols-3 gap-8"
-          >
+          <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4 }}
                 className="p-8 bg-white border-2 border-slate-200 rounded-xl hover:border-blue-600 transition-all"
               >
@@ -196,7 +188,7 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -204,10 +196,9 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
       <section className="relative py-24 overflow-hidden bg-blue-600">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-            variants={fadeInUp}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-5xl mb-6 text-white font-bold">Ready to Experience the Difference?</h2>
             <p className="text-xl text-blue-50 mb-8 max-w-2xl mx-auto">
@@ -215,7 +206,7 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <motion.button
-                whileHover={{
+                whileHover={{ 
                   scale: 1.05,
                   boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)"
                 }}
@@ -227,7 +218,7 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
                 <ArrowRight className="w-5 h-5" />
               </motion.button>
               <motion.button
-                whileHover={{
+                whileHover={{ 
                   scale: 1.05
                 }}
                 whileTap={{ scale: 0.95 }}
@@ -243,3 +234,4 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
     </div>
   );
 }
+

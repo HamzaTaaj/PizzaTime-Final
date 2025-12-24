@@ -12,6 +12,7 @@ import { WhyPizzaAnytimePage } from './components/WhyPizzaAnytimePage';
 import { OnsiteSupportPage } from './components/OnsiteSupportPage';
 import { ROICalculatorPage } from './components/ROICalculatorPage';
 import { PrivacyTermsPage } from './components/PrivacyTermsPage';
+import { ContactPage } from './components/ContactPage';
 import { Footer } from './components/Footer';
 import { ArrowUp } from 'lucide-react';
 
@@ -61,6 +62,7 @@ export default function App() {
           {currentPage === 'onsite-support' && <OnsiteSupportPage onNavigate={handleNavigate} />}
           {currentPage === 'roi-calculator' && <ROICalculatorPage onNavigate={handleNavigate} />}
           {currentPage === 'privacy-terms' && <PrivacyTermsPage />}
+          {currentPage === 'contact' && <ContactPage />}
         </motion.main>
       </AnimatePresence>
 

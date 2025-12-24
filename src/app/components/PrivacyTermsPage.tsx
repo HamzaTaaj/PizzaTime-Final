@@ -1,6 +1,5 @@
 import { motion } from 'motion/react';
 import { Shield, FileText, CreditCard, Lock } from 'lucide-react';
-import { fadeInUp, viewportConfig } from '../utils/animations';
 
 export function PrivacyTermsPage() {
   return (
@@ -10,15 +9,15 @@ export function PrivacyTermsPage() {
         {/* Curved Bottom Wave Design */}
         <div className="absolute bottom-0 left-0 right-0 z-0">
           <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#ffffff" />
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#ffffff"/>
           </svg>
         </div>
-
+        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
           <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full mb-6">
               <Shield className="w-4 h-4 text-blue-600" />
@@ -39,16 +38,15 @@ export function PrivacyTermsPage() {
         {/* Curved Top Wave Design */}
         <div className="absolute top-0 left-0 right-0 z-0">
           <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#f8fafc" />
+            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#f8fafc"/>
           </svg>
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Privacy Policy */}
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-            variants={fadeInUp}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             className="mb-16"
           >
             <div className="flex items-center gap-3 mb-6">
@@ -62,7 +60,7 @@ export function PrivacyTermsPage() {
               <p className="text-slate-600 mb-4">
                 Pizza Anytime ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our services.
               </p>
-
+              
               <h3 className="text-xl text-slate-900 font-semibold mt-8 mb-4">Information We Collect</h3>
               <ul className="list-disc pl-6 text-slate-600 space-y-2 mb-4">
                 <li>Personal information (name, email, phone number, business address)</li>
@@ -94,10 +92,9 @@ export function PrivacyTermsPage() {
 
           {/* Terms of Service */}
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-            variants={fadeInUp}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             className="mb-16"
           >
             <div className="flex items-center gap-3 mb-6">
@@ -136,10 +133,9 @@ export function PrivacyTermsPage() {
 
           {/* Refund Policy */}
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-            variants={fadeInUp}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             className="mb-16"
           >
             <div className="flex items-center gap-3 mb-6">
@@ -176,10 +172,9 @@ export function PrivacyTermsPage() {
 
           {/* Contact Section */}
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-            variants={fadeInUp}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             className="p-8 bg-blue-50 border-2 border-blue-200 rounded-xl"
           >
             <h3 className="text-2xl mb-4 text-slate-900 font-semibold">Questions About Our Policies?</h3>
@@ -197,3 +192,4 @@ export function PrivacyTermsPage() {
     </div>
   );
 }
+

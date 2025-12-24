@@ -1,7 +1,99 @@
-import { motion } from 'motion/react';
+import { motion, useInView } from 'motion/react';
 import { Zap, Clock, Shield, TrendingUp, ArrowRight, Building2, DollarSign, Users, Globe, BarChart3, Award, CheckCircle2 } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import vend1Image from '@/assets/vend1.png';
+import { useRef, useEffect, useState } from 'react';
+
+// Animated Counter Component
+function AnimatedCounter({ value, suffix = '', prefix = '', duration = 2 }: { value: number | string; suffix?: string; prefix?: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    if (isInView) {
+      // Handle string values like "50+" or percentages
+      if (typeof value === 'string') {
+        // Extract number from strings like "300%", "98%", "50+", "45%"
+        const match = value.match(/(\d+)/);
+        if (match) {
+          const numValue = parseInt(match[1]);
+          const hasPlus = value.includes('+');
+          const hasPercent = value.includes('%');
+          
+          const startTime = Date.now();
+          const startValue = 0;
+          const endValue = numValue;
+
+          const animate = () => {
+            const now = Date.now();
+            const elapsed = (now - startTime) / 1000;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Easing function for smooth animation
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            const currentValue = Math.floor(startValue + (endValue - startValue) * easeOutQuart);
+            
+            setCount(currentValue as any);
+
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            } else {
+              setCount(value as any);
+            }
+          };
+
+          requestAnimationFrame(animate);
+        } else {
+          setCount(value as any);
+        }
+        return;
+      }
+
+      // Animate numeric values
+      const startTime = Date.now();
+      const startValue = 0;
+      const endValue = value as number;
+
+      const animate = () => {
+        const now = Date.now();
+        const elapsed = (now - startTime) / 1000;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentValue = Math.floor(startValue + (endValue - startValue) * easeOutQuart);
+        
+        setCount(currentValue);
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          setCount(endValue);
+        }
+      };
+
+      requestAnimationFrame(animate);
+    }
+  }, [isInView, value, duration]);
+
+  // For string values with numbers, format the display
+  if (typeof value === 'string' && typeof count === 'number') {
+    const hasPlus = value.includes('+');
+    const hasPercent = value.includes('%');
+    return (
+      <span ref={ref}>
+        {prefix}{count}{hasPercent ? '%' : ''}{hasPlus ? '+' : ''}{suffix}
+      </span>
+    );
+  }
+
+  return (
+    <span ref={ref}>
+      {prefix}{typeof value === 'string' ? value : count}{suffix}
+    </span>
+  );
+}
 
 interface HomePageProps {
   onNavigate: (page: string) => void;
@@ -320,7 +412,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   <benefit.icon className="w-8 h-8 text-blue-600" />
                 </div>
                 <div className="text-5xl mb-3 font-bold text-blue-600">
-                  {benefit.value}
+                  <AnimatedCounter value={benefit.value} duration={2} />
                 </div>
                 <h3 className="text-xl mb-2 text-slate-900 font-semibold">{benefit.title}</h3>
                 <p className="text-slate-600">{benefit.description}</p>

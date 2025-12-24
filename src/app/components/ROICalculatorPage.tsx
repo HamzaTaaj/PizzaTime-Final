@@ -1,7 +1,6 @@
 import { motion } from 'motion/react';
 import { Calculator, TrendingUp, DollarSign, Calendar, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
-import { fadeInUp, staggerContainer, viewportConfig, slideInLeft, slideInRight, scaleUp } from '../utils/animations';
 
 interface ROICalculatorPageProps {
   onNavigate: (page: string) => void;
@@ -48,15 +47,15 @@ export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
         {/* Curved Bottom Wave Design */}
         <div className="absolute bottom-0 left-0 right-0 z-0">
           <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#ffffff" />
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#ffffff"/>
           </svg>
         </div>
-
+        
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
           <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInUp}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full mb-6">
               <Calculator className="w-4 h-4 text-blue-600" />
@@ -77,21 +76,20 @@ export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
         {/* Curved Top Wave Design */}
         <div className="absolute top-0 left-0 right-0 z-0">
           <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#f8fafc" />
+            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#f8fafc"/>
           </svg>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Input Section */}
             <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportConfig}
-              variants={slideInLeft}
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               className="space-y-6"
             >
               <h2 className="text-3xl mb-8 text-slate-900 font-bold">Enter Your Details</h2>
-
+              
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm mb-2 text-slate-700 font-medium">
@@ -169,14 +167,13 @@ export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
 
             {/* Results Section */}
             <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportConfig}
-              variants={slideInRight}
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
               className="space-y-6"
             >
               <h2 className="text-3xl mb-8 text-slate-900 font-bold">Your Results</h2>
-
+              
               <div className="space-y-6">
                 <div className="p-6 bg-blue-50 border-2 border-blue-200 rounded-xl">
                   <div className="flex items-center gap-3 mb-2">
@@ -218,10 +215,11 @@ export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
                   </div>
                 </div>
 
-                <div className={`p-6 border-2 rounded-xl ${results.roiPercentage > 0
-                    ? 'bg-green-50 border-green-200'
+                <div className={`p-6 border-2 rounded-xl ${
+                  results.roiPercentage > 0 
+                    ? 'bg-green-50 border-green-200' 
                     : 'bg-red-50 border-red-200'
-                  }`}>
+                }`}>
                   <div className="flex items-center gap-3 mb-2">
                     <TrendingUp className={`w-6 h-6 ${results.roiPercentage > 0 ? 'text-green-600' : 'text-red-600'}`} />
                     <h3 className="text-lg text-slate-700 font-medium">ROI Percentage</h3>
@@ -260,17 +258,16 @@ export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
       <section className="relative py-24 overflow-hidden bg-blue-600">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportConfig}
-            variants={scaleUp}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-5xl mb-6 text-white font-bold">Ready to Maximize Your ROI?</h2>
             <p className="text-xl text-blue-50 mb-8 max-w-2xl mx-auto">
               Join businesses already seeing impressive returns with Pizza Anytime
             </p>
             <motion.button
-              whileHover={{
+              whileHover={{ 
                 scale: 1.05,
                 boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)"
               }}
@@ -287,3 +284,4 @@ export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
     </div>
   );
 }
+
