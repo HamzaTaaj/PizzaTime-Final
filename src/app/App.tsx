@@ -13,6 +13,7 @@ import { OnsiteSupportPage } from './components/OnsiteSupportPage';
 import { ROICalculatorPage } from './components/ROICalculatorPage';
 import { PrivacyTermsPage } from './components/PrivacyTermsPage';
 import { ContactPage } from './components/ContactPage';
+import { LoginPage } from './components/LoginPage';
 import { Footer } from './components/Footer';
 import { ArrowUp } from 'lucide-react';
 
@@ -63,6 +64,7 @@ export default function App() {
           {currentPage === 'roi-calculator' && <ROICalculatorPage onNavigate={handleNavigate} />}
           {currentPage === 'privacy-terms' && <PrivacyTermsPage />}
           {currentPage === 'contact' && <ContactPage />}
+          {currentPage === 'login' && <LoginPage onNavigate={handleNavigate} />}
         </motion.main>
       </AnimatePresence>
 

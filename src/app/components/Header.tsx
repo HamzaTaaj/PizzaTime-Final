@@ -337,6 +337,7 @@ export function Header({
             </div>
 
             <motion.button
+              onClick={() => onNavigate('login')}
               whileHover={{
                 scale: 1.02,
                 boxShadow: "0 10px 30px rgba(37, 99, 235, 0.3)",
@@ -624,6 +625,10 @@ export function Header({
                 </div>
                 
                 <motion.button
+                  onClick={() => {
+                    onNavigate('login');
+                    setMobileMenuOpen(false);
+                  }}
                   whileHover={{
                     scale: 1.02,
                     boxShadow: "0 10px 30px rgba(37, 99, 235, 0.3)",

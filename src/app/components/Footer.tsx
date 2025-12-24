@@ -101,24 +101,36 @@ export function Footer({ onNavigate }: FooterProps) {
             <h3 className="text-lg mb-6 font-semibold text-slate-900">Resources</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors">
-                  Documentation
-                </a>
+                <button
+                  onClick={() => onNavigate('onsite-support')}
+                  className="text-slate-600 hover:text-blue-600 transition-colors"
+                >
+                  Onsite Support
+                </button>
               </li>
               <li>
-                <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors">
-                  API Reference
-                </a>
+                <button
+                  onClick={() => onNavigate('privacy-terms')}
+                  className="text-slate-600 hover:text-blue-600 transition-colors"
+                >
+                  Privacy Policy
+                </button>
               </li>
               <li>
-                <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors">
-                  Support Center
-                </a>
+                <button
+                  onClick={() => onNavigate('contact')}
+                  className="text-slate-600 hover:text-blue-600 transition-colors"
+                >
+                  Contact Us
+                </button>
               </li>
               <li>
-                <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors">
-                  Training
-                </a>
+                <button
+                  onClick={() => onNavigate('company')}
+                  className="text-slate-600 hover:text-blue-600 transition-colors"
+                >
+                  About Us
+                </button>
               </li>
             </ul>
           </div>
@@ -156,16 +168,19 @@ export function Footer({ onNavigate }: FooterProps) {
             <p className="text-slate-600 text-sm">
               © {currentYear} High Sierra Vending, LLC. All rights reserved.
             </p>
-            <div className="flex items-center gap-6 text-sm">
-              <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
+              <button
+                onClick={() => onNavigate('privacy-terms')}
+                className="text-slate-600 hover:text-blue-600 transition-colors"
+              >
                 Privacy Policy
-              </a>
-              <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors">
+              </button>
+              <button
+                onClick={() => onNavigate('privacy-terms')}
+                className="text-slate-600 hover:text-blue-600 transition-colors"
+              >
                 Terms of Service
-              </a>
-              <a href="#" className="text-slate-600 hover:text-blue-600 transition-colors">
-                Cookie Policy
-              </a>
+              </button>
             </div>
           </div>
         </div>
