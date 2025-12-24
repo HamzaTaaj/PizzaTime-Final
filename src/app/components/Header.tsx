@@ -118,6 +118,20 @@ export function Header({
                   >
                     <motion.button
                       onClick={() => {
+                        onNavigate("company");
+                        setAboutUsOpen(false);
+                      }}
+                      whileHover={{ 
+                        x: 4,
+                        backgroundColor: "#f1f5f9"
+                      }}
+                      whileTap={{ scale: 0.98 }}
+                      className="block w-full text-left px-4 py-3 text-slate-700 transition-all hover:text-blue-600"
+                    >
+                      Company Page
+                    </motion.button>
+                    <motion.button
+                      onClick={() => {
                         onNavigate("why-pizza-anytime");
                         setAboutUsOpen(false);
                       }}
@@ -415,6 +429,21 @@ export function Header({
                         className="overflow-hidden"
                       >
                         <div className="pl-8 space-y-2 pt-2">
+                          <motion.button
+                            onClick={() => {
+                              onNavigate("company");
+                              setMobileMenuOpen(false);
+                              setMobileAboutUsOpen(false);
+                            }}
+                            whileHover={{ 
+                              x: 4,
+                              backgroundColor: "#f1f5f9",
+                              color: "#2563eb"
+                            }}
+                            className="block w-full text-left px-4 py-2 text-slate-600 rounded-lg transition-all text-sm"
+                          >
+                            Company Page
+                          </motion.button>
                           <motion.button
                             onClick={() => {
                               onNavigate("why-pizza-anytime");
