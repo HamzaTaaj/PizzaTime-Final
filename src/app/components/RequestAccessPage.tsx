@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Lock, Mail, User, MapPin, CheckCircle2 } from 'lucide-react';
+import { Lock, Mail, User, MapPin, CheckCircle2, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { fadeInUp, staggerContainer, viewportConfig, slideInLeft, slideInRight } from '../utils/animations';
 
@@ -14,11 +14,54 @@ export function RequestAccessPage() {
     role: '',
     message: ''
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    setSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/submit-access-request', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit request');
+      }
+
+      setSubmitStatus('success');
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        company: '',
+        location: '',
+        machineCount: '',
+        role: '',
+        message: ''
+      });
+      
+      // Auto-hide success message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 5000);
+    } catch (error) {
+      setSubmitStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to submit request. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -300,17 +343,53 @@ export function RequestAccessPage() {
                     />
                   </div>
 
+                  {/* Status Messages */}
+                  {submitStatus === 'success' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-4 bg-green-50 border-2 border-green-200 rounded-lg"
+                    >
+                      <div className="flex items-center gap-2 text-green-700">
+                        <CheckCircle2 className="w-5 h-5" />
+                        <p className="font-medium">Request submitted successfully! We'll be in touch soon.</p>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {submitStatus === 'error' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-4 bg-red-50 border-2 border-red-200 rounded-lg"
+                    >
+                      <p className="text-red-700 font-medium">{errorMessage}</p>
+                    </motion.div>
+                  )}
+
                   {/* Submit Button */}
                   <motion.button
                     type="submit"
-                    whileHover={{
+                    disabled={submitting}
+                    whileHover={!submitting ? {
                       scale: 1.02,
                       boxShadow: '0 10px 30px rgba(37, 99, 235, 0.3)'
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full py-4 bg-blue-600 text-white rounded-lg shadow-lg shadow-blue-600/20 transition-all font-semibold hover:bg-blue-700"
+                    } : {}}
+                    whileTap={!submitting ? { scale: 0.98 } : {}}
+                    className={`w-full py-4 rounded-lg shadow-lg shadow-blue-600/20 transition-all font-semibold flex items-center justify-center gap-2 ${
+                      submitting 
+                        ? 'bg-blue-400 cursor-not-allowed' 
+                        : 'bg-blue-600 hover:bg-blue-700 text-white'
+                    }`}
                   >
-                    Send Request
+                    {submitting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      'Send Request'
+                    )}
                   </motion.button>
                 </form>
               </div>

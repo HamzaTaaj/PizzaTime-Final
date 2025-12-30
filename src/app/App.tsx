@@ -14,8 +14,10 @@ import { ROICalculatorPage } from './components/ROICalculatorPage';
 import { PrivacyTermsPage } from './components/PrivacyTermsPage';
 import { ContactPage } from './components/ContactPage';
 import { LoginPage } from './components/LoginPage';
+import { AdminDashboard } from './components/AdminDashboard';
 import { Footer } from './components/Footer';
 import { ArrowUp } from 'lucide-react';
+import { isAuthenticated } from './utils/auth';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -31,7 +33,22 @@ export default function App() {
   }, []);
 
   const handleNavigate = (page: string) => {
-    setCurrentPage(page);
+    // If navigating to admin, check authentication
+    if (page === 'admin' && !isAuthenticated()) {
+      setCurrentPage('login');
+    } else {
+      setCurrentPage(page);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleLoginSuccess = () => {
+    setCurrentPage('admin');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleLogout = () => {
+    setCurrentPage('login');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -64,7 +81,8 @@ export default function App() {
           {currentPage === 'roi-calculator' && <ROICalculatorPage onNavigate={handleNavigate} />}
           {currentPage === 'privacy-terms' && <PrivacyTermsPage />}
           {currentPage === 'contact' && <ContactPage />}
-          {currentPage === 'login' && <LoginPage onNavigate={handleNavigate} />}
+          {currentPage === 'login' && <LoginPage onNavigate={handleNavigate} onLoginSuccess={handleLoginSuccess} />}
+          {currentPage === 'admin' && <AdminDashboard onNavigate={handleNavigate} onLogout={handleLogout} />}
         </motion.main>
       </AnimatePresence>
 

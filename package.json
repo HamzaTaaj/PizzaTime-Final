@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite"
+    "dev": "vite",
+    "dev:vercel": "vercel dev"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -64,7 +65,11 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.1.12",
+    "@types/node": "22.10.5",
+    "@vercel/node": "3.2.26",
     "@vitejs/plugin-react": "4.7.0",
+    "jsonwebtoken": "9.0.2",
+    "@types/jsonwebtoken": "9.0.7",
     "tailwindcss": "4.1.12",
     "vite": "6.3.5"
   },
