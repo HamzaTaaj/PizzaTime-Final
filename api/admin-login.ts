@@ -19,9 +19,12 @@ export default async function handler(
       });
     }
 
-    // Get admin credentials from environment variables
+    // Get credentials from environment variables
     const adminEmail = process.env.ADMIN_EMAIL;
     const adminPassword = process.env.ADMIN_PASSWORD;
+    const storeOwnerEmail = process.env.STORE_OWNER_EMAIL;
+    const storeOwnerPassword = process.env.STORE_OWNER_PASSWORD;
+    const shopifyDomain = process.env.SHOPIFY_STORE_DOMAIN;
     const jwtSecret = process.env.JWT_SECRET;
 
     if (!adminEmail || !adminPassword || !jwtSecret) {
@@ -31,9 +34,9 @@ export default async function handler(
       });
     }
 
-    // Verify credentials
+    // Check if it's admin login
     if (email === adminEmail && password === adminPassword) {
-      // Generate JWT token
+      // Generate JWT token for admin
       const token = jwt.sign(
         { 
           email: adminEmail,
@@ -51,7 +54,23 @@ export default async function handler(
           role: 'admin'
         }
       });
-    } else {
+    } 
+    
+    // Check if it's store owner login
+    else if (storeOwnerEmail && storeOwnerPassword && 
+             email === storeOwnerEmail && password === storeOwnerPassword) {
+      return res.status(200).json({ 
+        success: true,
+        redirectTo: `https://${shopifyDomain}`,
+        user: {
+          email: storeOwnerEmail,
+          role: 'store_owner'
+        }
+      });
+    } 
+    
+    // Invalid credentials
+    else {
       return res.status(401).json({ 
         error: 'Invalid email or password' 
       });

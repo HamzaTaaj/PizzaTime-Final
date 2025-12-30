@@ -38,7 +38,14 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps = {}) {
         throw new Error(data.error || 'Login failed');
       }
 
-      // Save auth token and user
+      // Check if store owner (redirect to Shopify)
+      if (data.redirectTo) {
+        // Store owner login - redirect to Shopify store
+        window.location.href = data.redirectTo;
+        return;
+      }
+
+      // Admin login - save token and navigate to dashboard
       saveAuthToken(data.token);
       saveAuthUser(data.user);
 
