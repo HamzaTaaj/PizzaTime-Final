@@ -84,6 +84,28 @@ export default async function handler(
       const errorData = await shopifyResponse.json();
       console.error('Shopify API error:', errorData);
       
+      // Check for common errors
+      if (errorData.errors) {
+        const errorMessage = JSON.stringify(errorData.errors);
+        
+        // Metaobject type doesn't exist
+        if (errorMessage.includes('type') || errorMessage.includes('not found')) {
+          return res.status(500).json({ 
+            error: 'Metaobject type not configured. Please create "access_request" metaobject definition in Shopify admin first.',
+            setupUrl: 'https://admin.shopify.com/store/pizza-anytime-2/settings/custom_data',
+            details: errorData
+          });
+        }
+        
+        // Permission error
+        if (errorMessage.includes('permission') || errorMessage.includes('access')) {
+          return res.status(500).json({ 
+            error: 'API permissions missing. Please add read_metaobjects and write_metaobjects permissions to your Shopify app.',
+            details: errorData
+          });
+        }
+      }
+      
       return res.status(500).json({ 
         error: 'Failed to submit request. Please try again.',
         details: errorData
