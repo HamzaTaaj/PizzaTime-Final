@@ -1,12 +1,9 @@
 import { motion, useInView } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, TrendingUp, Clock, DollarSign, Users, Zap, Shield, Send, User, Mail } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import vend1Image from '@/assets/vend1.png';
 import { useState, useRef, useEffect } from 'react';
-
-interface LandingPageProps {
-  onNavigate: (page: string) => void;
-}
 
 // Animated Counter Component
 function AnimatedCounter({ value, suffix = '', prefix = '', duration = 2 }: { value: number | string; suffix?: string; prefix?: string; duration?: number }) {
@@ -56,7 +53,8 @@ function AnimatedCounter({ value, suffix = '', prefix = '', duration = 2 }: { va
   );
 }
 
-export function LandingPage({ onNavigate }: LandingPageProps) {
+export function LandingPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -66,7 +64,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission - redirect to request access page
-    onNavigate('request-access');
+    navigate('/request-access');
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -430,7 +428,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                   boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)"
                 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => onNavigate('request-access')}
+                onClick={() => navigate('/request-access')}
                 className="px-10 py-5 bg-white text-blue-600 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-colors"
               >
                 Request Access Now
@@ -440,7 +438,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                   scale: 1.05
                 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => onNavigate('roi-calculator')}
+                onClick={() => navigate('/roi-calculator')}
                 className="px-10 py-5 border-2 border-white/50 rounded-lg hover:bg-white/10 transition-colors text-white font-semibold text-lg"
               >
                 Calculate Your ROI
@@ -450,7 +448,7 @@ export function LandingPage({ onNavigate }: LandingPageProps) {
                   scale: 1.05
                 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => onNavigate('product')}
+                onClick={() => navigate('/product')}
                 className="px-10 py-5 border-2 border-white/50 rounded-lg hover:bg-white/10 transition-colors text-white font-semibold text-lg"
               >
                 View Machine Details

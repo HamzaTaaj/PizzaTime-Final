@@ -1,21 +1,20 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, ChevronDown } from "lucide-react";
+import logo from '@/assets/Untitled.svg';
 
-interface HeaderProps {
-  currentPage: string;
-  onNavigate: (page: string) => void;
-}
-
-export function Header({
-  currentPage,
-  onNavigate,
-}: HeaderProps) {
+export function Header() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [aboutUsOpen, setAboutUsOpen] = useState(false);
   const [mobileResourcesOpen, setMobileResourcesOpen] = useState(false);
   const [mobileAboutUsOpen, setMobileAboutUsOpen] = useState(false);
+
+  // Helper function to check if current path matches
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200 backdrop-blur-xl bg-white/95 shadow-sm">
@@ -23,13 +22,11 @@ export function Header({
         <div className="flex items-center justify-between h-20 w-full">
           {/* Logo */}
           <motion.div
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => onNavigate("home")}
+            className="flex items-center gap-4 cursor-pointer"
+            onClick={() => navigate("/")}
             whileHover={{ scale: 1.02 }}
           >
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-md">
-              <span className="text-white text-xl">🍕</span>
-            </div>
+            <img src={logo} alt="Pizza Anytime Logo" className="w-20 h-20 object-contain" />
             <span className="text-2xl tracking-tight font-bold text-slate-900">
               Pizza{" "}
               <span className="text-blue-600">Anytime</span>
@@ -40,13 +37,13 @@ export function Header({
           <div className="hidden lg:flex items-center gap-6">
             {/* 1. Home */}
             <motion.button
-              onClick={() => onNavigate("home")}
+              onClick={() => navigate("/")}
               whileHover={{ 
                 scale: 1.02,
                 color: "#2563eb"
               }}
               whileTap={{ scale: 0.98 }}
-              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${currentPage === "home" ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
+              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${isActive("/") ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
             >
               <motion.div
                 className="absolute inset-0 bg-blue-50 rounded-lg z-0"
@@ -54,7 +51,7 @@ export function Header({
                 whileHover={{ opacity: 1 }}
               />
               <span className="relative z-10">Home</span>
-              {currentPage === "home" && (
+              {isActive("/") && (
                 <motion.div
                   className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 z-20 rounded-full"
                   layoutId="activeTab"
@@ -64,13 +61,13 @@ export function Header({
 
             {/* 2. Product Information */}
             <motion.button
-              onClick={() => onNavigate("product")}
+              onClick={() => navigate("/product")}
               whileHover={{ 
                 scale: 1.02,
                 color: "#2563eb"
               }}
               whileTap={{ scale: 0.98 }}
-              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${currentPage === "product" ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
+              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${isActive("/product") ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
             >
               <motion.div
                 className="absolute inset-0 bg-blue-50 rounded-lg z-0"
@@ -78,7 +75,7 @@ export function Header({
                 whileHover={{ opacity: 1 }}
               />
               <span className="relative z-10">Product Information</span>
-              {currentPage === "product" && (
+              {isActive("/product") && (
                 <motion.div
                   className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 z-20 rounded-full"
                   layoutId="activeTab"
@@ -118,7 +115,7 @@ export function Header({
                   >
                     <motion.button
                       onClick={() => {
-                        onNavigate("company");
+                        navigate("/company");
                         setAboutUsOpen(false);
                       }}
                       whileHover={{ 
@@ -132,7 +129,7 @@ export function Header({
                     </motion.button>
                     <motion.button
                       onClick={() => {
-                        onNavigate("why-pizza-anytime");
+                        navigate("/why-pizza-anytime");
                         setAboutUsOpen(false);
                       }}
                       whileHover={{ 
@@ -146,7 +143,7 @@ export function Header({
                     </motion.button>
                     <motion.button
                       onClick={() => {
-                        onNavigate("onsite-support");
+                        navigate("/onsite-support");
                         setAboutUsOpen(false);
                       }}
                       whileHover={{ 
@@ -160,7 +157,7 @@ export function Header({
                     </motion.button>
                     <motion.button
                       onClick={() => {
-                        onNavigate("privacy-terms");
+                        navigate("/privacy-terms");
                         setAboutUsOpen(false);
                       }}
                       whileHover={{ 
@@ -179,13 +176,13 @@ export function Header({
 
             {/* 4. ROI Calculator */}
             <motion.button
-              onClick={() => onNavigate("roi-calculator")}
+              onClick={() => navigate("/roi-calculator")}
               whileHover={{ 
                 scale: 1.02,
                 color: "#2563eb"
               }}
               whileTap={{ scale: 0.98 }}
-              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${currentPage === "roi-calculator" ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
+              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${isActive("/roi-calculator") ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
             >
               <motion.div
                 className="absolute inset-0 bg-blue-50 rounded-lg z-0"
@@ -193,7 +190,7 @@ export function Header({
                 whileHover={{ opacity: 1 }}
               />
               <span className="relative z-10">ROI Calculator</span>
-              {currentPage === "roi-calculator" && (
+              {isActive("/roi-calculator") && (
                 <motion.div
                   className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 z-20 rounded-full"
                   layoutId="activeTab"
@@ -203,13 +200,13 @@ export function Header({
 
             {/* 5. Marketing */}
             <motion.button
-              onClick={() => onNavigate("landing")}
+              onClick={() => navigate("/landing")}
               whileHover={{ 
                 scale: 1.02,
                 color: "#2563eb"
               }}
               whileTap={{ scale: 0.98 }}
-              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${currentPage === "landing" ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
+              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${isActive("/landing") ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
             >
               <motion.div
                 className="absolute inset-0 bg-blue-50 rounded-lg z-0"
@@ -217,7 +214,7 @@ export function Header({
                 whileHover={{ opacity: 1 }}
               />
               <span className="relative z-10">Marketing</span>
-              {currentPage === "landing" && (
+              {isActive("/landing") && (
                 <motion.div
                   className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 z-20 rounded-full"
                   layoutId="activeTab"
@@ -227,13 +224,13 @@ export function Header({
 
             {/* 6. Request Access */}
             <motion.button
-              onClick={() => onNavigate("request-access")}
+              onClick={() => navigate("/request-access")}
               whileHover={{ 
                 scale: 1.02,
                 color: "#2563eb"
               }}
               whileTap={{ scale: 0.98 }}
-              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${currentPage === "request-access" ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
+              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${isActive("/request-access") ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
             >
               <motion.div
                 className="absolute inset-0 bg-blue-50 rounded-lg z-0"
@@ -241,7 +238,7 @@ export function Header({
                 whileHover={{ opacity: 1 }}
               />
               <span className="relative z-10">Request Access</span>
-              {currentPage === "request-access" && (
+              {isActive("/request-access") && (
                 <motion.div
                   className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 z-20 rounded-full"
                   layoutId="activeTab"
@@ -251,13 +248,13 @@ export function Header({
 
             {/* 7. Contact Us */}
             <motion.button
-              onClick={() => onNavigate("contact")}
+              onClick={() => navigate("/contact")}
               whileHover={{ 
                 scale: 1.02,
                 color: "#2563eb"
               }}
               whileTap={{ scale: 0.98 }}
-              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${currentPage === "contact" ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
+              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${isActive("/contact") ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
             >
               <motion.div
                 className="absolute inset-0 bg-blue-50 rounded-lg z-0"
@@ -265,7 +262,7 @@ export function Header({
                 whileHover={{ opacity: 1 }}
               />
               <span className="relative z-10">Contact Us</span>
-              {currentPage === "contact" && (
+              {isActive("/contact") && (
                 <motion.div
                   className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 z-20 rounded-full"
                   layoutId="activeTab"
@@ -305,7 +302,7 @@ export function Header({
                   >
                     <motion.button
                       onClick={() => {
-                        onNavigate("manual");
+                        navigate("/manual");
                         setResourcesOpen(false);
                       }}
                       whileHover={{ 
@@ -319,7 +316,7 @@ export function Header({
                     </motion.button>
                     <motion.button
                       onClick={() => {
-                        onNavigate("blog");
+                        navigate("/blog");
                         setResourcesOpen(false);
                       }}
                       whileHover={{ 
@@ -337,7 +334,7 @@ export function Header({
             </div>
 
             <motion.button
-              onClick={() => onNavigate('login')}
+              onClick={() => navigate('/login')}
               whileHover={{
                 scale: 1.02,
                 boxShadow: "0 10px 30px rgba(37, 99, 235, 0.3)",
@@ -375,7 +372,7 @@ export function Header({
                 {/* 1. Home */}
                 <motion.button
                   onClick={() => {
-                    onNavigate("home");
+                    navigate("/");
                     setMobileMenuOpen(false);
                   }}
                   whileHover={{ 
@@ -392,7 +389,7 @@ export function Header({
                 {/* 2. Product Information */}
                 <motion.button
                   onClick={() => {
-                    onNavigate("product");
+                    navigate("/product");
                     setMobileMenuOpen(false);
                   }}
                   whileHover={{ 
@@ -432,7 +429,7 @@ export function Header({
                         <div className="pl-8 space-y-2 pt-2">
                           <motion.button
                             onClick={() => {
-                              onNavigate("company");
+                              navigate("/company");
                               setMobileMenuOpen(false);
                               setMobileAboutUsOpen(false);
                             }}
@@ -447,7 +444,7 @@ export function Header({
                           </motion.button>
                           <motion.button
                             onClick={() => {
-                              onNavigate("why-pizza-anytime");
+                              navigate("/why-pizza-anytime");
                               setMobileMenuOpen(false);
                               setMobileAboutUsOpen(false);
                             }}
@@ -462,7 +459,7 @@ export function Header({
                           </motion.button>
                           <motion.button
                             onClick={() => {
-                              onNavigate("onsite-support");
+                              navigate("/onsite-support");
                               setMobileMenuOpen(false);
                               setMobileAboutUsOpen(false);
                             }}
@@ -477,7 +474,7 @@ export function Header({
                           </motion.button>
                           <motion.button
                             onClick={() => {
-                              onNavigate("privacy-terms");
+                              navigate("/privacy-terms");
                               setMobileMenuOpen(false);
                               setMobileAboutUsOpen(false);
                             }}
@@ -499,7 +496,7 @@ export function Header({
                 {/* 4. ROI Calculator */}
                 <motion.button
                   onClick={() => {
-                    onNavigate("roi-calculator");
+                    navigate("/roi-calculator");
                     setMobileMenuOpen(false);
                   }}
                   whileHover={{ 
@@ -516,7 +513,7 @@ export function Header({
                 {/* 5. Marketing */}
                 <motion.button
                   onClick={() => {
-                    onNavigate("landing");
+                    navigate("/landing");
                     setMobileMenuOpen(false);
                   }}
                   whileHover={{ 
@@ -533,7 +530,7 @@ export function Header({
                 {/* 6. Request Access */}
                 <motion.button
                   onClick={() => {
-                    onNavigate("request-access");
+                    navigate("/request-access");
                     setMobileMenuOpen(false);
                   }}
                   whileHover={{ 
@@ -550,7 +547,7 @@ export function Header({
                 {/* 7. Contact Us */}
                 <motion.button
                   onClick={() => {
-                    onNavigate("contact");
+                    navigate("/contact");
                     setMobileMenuOpen(false);
                   }}
                   whileHover={{ 
@@ -590,7 +587,7 @@ export function Header({
                         <div className="pl-8 space-y-2 pt-2">
                           <motion.button
                             onClick={() => {
-                              onNavigate("manual");
+                              navigate("/manual");
                               setMobileMenuOpen(false);
                               setMobileResourcesOpen(false);
                             }}
@@ -605,7 +602,7 @@ export function Header({
                           </motion.button>
                           <motion.button
                             onClick={() => {
-                              onNavigate("blog");
+                              navigate("/blog");
                               setMobileMenuOpen(false);
                               setMobileResourcesOpen(false);
                             }}
@@ -626,7 +623,7 @@ export function Header({
                 
                 <motion.button
                   onClick={() => {
-                    onNavigate('login');
+                    navigate('/login');
                     setMobileMenuOpen(false);
                   }}
                   whileHover={{

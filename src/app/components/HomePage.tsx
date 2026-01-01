@@ -1,4 +1,5 @@
 import { motion, useInView } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { Zap, Clock, Shield, TrendingUp, ArrowRight, Building2, DollarSign, Users, Globe, BarChart3, Award, CheckCircle2, Calendar } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import vend1Image from '@/assets/vend1.png';
@@ -151,11 +152,8 @@ function AnimatedCounter({ value, suffix = '', prefix = '', duration = 2 }: { va
   );
 }
 
-interface HomePageProps {
-  onNavigate: (page: string) => void;
-}
-
-export function HomePage({ onNavigate }: HomePageProps) {
+export function HomePage() {
+  const navigate = useNavigate();
   const features = [
     {
       icon: Clock,
@@ -318,7 +316,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                     scale: 1.02
                   }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => onNavigate('request-access')}
+                  onClick={() => navigate('/request-access')}
                   className="px-8 py-4 bg-blue-600 text-white rounded-lg flex items-center gap-2 group font-medium"
                 >
                   Request Access
@@ -563,7 +561,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
               whileHover={{
                 scale: 1.02
               }}
-              onClick={() => onNavigate('blog')}
+              onClick={() => navigate('/blog')}
               className="hidden md:inline-flex items-center gap-3 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600/90 transition-all shadow-md hover:shadow-lg group mt-6 md:mt-0"
             >
               View All
@@ -584,7 +582,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   y: -4
                 }}
                 className="bg-white border border-slate-200 rounded-xl overflow-hidden transition-all cursor-pointer group hover:border-blue-600 hover:shadow-lg"
-                onClick={() => onNavigate('blog')}
+                onClick={() => navigate('/blog')}
               >
                 {/* Image Container */}
                 <div className="relative h-48 overflow-hidden">

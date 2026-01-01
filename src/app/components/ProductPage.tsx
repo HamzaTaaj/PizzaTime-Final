@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useInView } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { Cpu, Thermometer, Gauge, Wifi, Shield, Wrench, Package, Zap, CheckCircle2, Flame, UtensilsCrossed } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { fadeInUp, staggerContainer, viewportConfig, slideInLeft, slideInRight, scaleUp } from '../utils/animations';
@@ -57,11 +58,8 @@ function AnimatedCounter({ value, suffix = '', prefix = '', duration = 2 }: { va
   );
 }
 
-interface ProductPageProps {
-  onNavigate: (page: string) => void;
-}
-
-export function ProductPage({ onNavigate }: ProductPageProps) {
+export function ProductPage() {
+  const navigate = useNavigate();
   const specs = [
     { label: 'Dimensions', value: '72" H × 48" W × 36" D', position: 'left-top' },
     { label: 'Weight', value: '850 lbs', position: 'left-middle' },
@@ -157,7 +155,7 @@ export function ProductPage({ onNavigate }: ProductPageProps) {
                 transition={{ duration: 3, repeat: Infinity }}
                 className="absolute -top-4 -right-4 px-6 py-3 bg-blue-600 text-white rounded-full shadow-lg"
               >
-                <span className="text-sm font-medium">Enterprise Ready</span>
+                <span className="text-sm font-medium">All Business Sizes</span>
               </motion.div>
             </motion.div>
 
@@ -169,15 +167,15 @@ export function ProductPage({ onNavigate }: ProductPageProps) {
               className="order-1 lg:order-2"
             >
               <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">Enterprise Solution</span>
+                <span className="text-blue-600 font-medium text-sm">For All Business Sizes</span>
               </motion.div>
 
               <motion.h1 variants={fadeInUp} className="text-5xl md:text-6xl mb-6 text-slate-900 font-bold">
-                PizzaMatic <span className="text-blue-600">Pro X1</span>
+                Base Model: <span className="text-blue-600">PMV1.4.12</span>
               </motion.h1>
 
               <motion.p variants={fadeInUp} className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Unlike other vending programs that force you to buy their pizzas by the pallet, Pizza Anytime lets you stay in control. Bake your own signature pies, partner with a beloved local shop, or source nationally distributed brands—whatever keeps customers coming back. Every dollar of sales goes straight to you; we never withhold a share or skim your takings.
+                Unlike other vending programs that force you to buy their pizzas by the pallet, Pizza Anytime lets you stay in control. Whether you're a startup, small operator, or large enterprise, we're here to support your success. Bake your own signature pies, partner with a beloved local shop, or source nationally distributed brands—whatever keeps customers coming back. Every dollar of sales goes straight to you; we never withhold a share or skim your takings.
               </motion.p>
 
               {/* Key Stats */}
@@ -208,7 +206,7 @@ export function ProductPage({ onNavigate }: ProductPageProps) {
                     boxShadow: '0 10px 30px rgba(37, 99, 235, 0.3)'
                   }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => onNavigate('request-access')}
+                  onClick={() => navigate('/request-access')}
                   className="px-8 py-4 bg-blue-600 text-white rounded-lg shadow-lg shadow-blue-600/20 font-medium"
                 >
                   Request Access
@@ -818,7 +816,7 @@ export function ProductPage({ onNavigate }: ProductPageProps) {
               style={{ perspective: "1000px" }}
               className="text-2xl mb-4 text-slate-900 font-semibold"
             >
-              Enterprise Branding Solutions
+              Custom Branding Solutions
             </motion.h3>
             <motion.p
               initial={{ opacity: 0, y: 30, rotateX: -10 }}
@@ -828,7 +826,7 @@ export function ProductPage({ onNavigate }: ProductPageProps) {
               style={{ perspective: "1000px" }}
               className="text-slate-600 mb-6 text-lg leading-relaxed"
             >
-              Comprehensive customization options for enterprise deployments. Tailor branding, interface, and integration to align with your corporate identity.
+              Comprehensive customization options for businesses of all sizes. Tailor branding, interface, and integration to align with your unique identity, whether you're a startup or an established enterprise.
             </motion.p>
             <motion.ul
               initial={{ opacity: 0, y: 30, rotateX: -10 }}
@@ -859,6 +857,130 @@ export function ProductPage({ onNavigate }: ProductPageProps) {
               ))}
             </motion.ul>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Model Variations Section */}
+      <section className="relative py-24 bg-slate-50">
+        {/* Curved Top Wave Design */}
+        <div className="absolute top-0 left-0 right-0 z-0">
+          <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#ffffff" />
+          </svg>
+        </div>
+        {/* Curved Bottom Wave Design */}
+        <div className="absolute bottom-0 left-0 right-0 z-0">
+          <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#ffffff" />
+          </svg>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 80, rotateX: -20 }}
+            whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            style={{ perspective: "1000px" }}
+            className="text-center mb-16"
+          >
+            <motion.h2
+              initial={{ opacity: 0, y: 30, rotateX: -10 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              style={{ perspective: "1000px" }}
+              className="text-4xl md:text-5xl mb-4 text-slate-900 font-bold"
+            >
+              Available <span className="text-blue-600">Configurations</span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 30, rotateX: -10 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+              style={{ perspective: "1000px" }}
+              className="text-xl text-slate-600 max-w-2xl mx-auto"
+            >
+              Choose the perfect model for your location and business needs
+            </motion.p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Indoor Model */}
+            <motion.div
+              initial={{ opacity: 0, y: 80, rotateX: -20 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              style={{ perspective: "1000px" }}
+              whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)' }}
+              className="p-8 bg-white border-2 border-slate-200 rounded-xl transition-all group hover:border-blue-600"
+            >
+              <div className="relative rounded-xl overflow-hidden mb-6 border-2 border-blue-100">
+                <ImageWithFallback
+                  src={vend1Image}
+                  alt="PMV1.4.12I - Indoor Model"
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+              <h3 className="text-2xl mb-3 text-slate-900 font-bold">PMV1.4.12I</h3>
+              <p className="text-blue-600 font-semibold mb-4">Indoor Model</p>
+              <p className="text-slate-600 leading-relaxed">
+                Perfect for climate-controlled environments such as office buildings, malls, hotels, and indoor facilities. Optimized for stable temperature conditions.
+              </p>
+            </motion.div>
+
+            {/* Outdoor Model */}
+            <motion.div
+              initial={{ opacity: 0, y: 80, rotateX: -20 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+              style={{ perspective: "1000px" }}
+              whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)' }}
+              className="p-8 bg-white border-2 border-slate-200 rounded-xl transition-all group hover:border-blue-600"
+            >
+              <div className="relative rounded-xl overflow-hidden mb-6 border-2 border-blue-100">
+                <ImageWithFallback
+                  src={vend2Image}
+                  alt="PMV1.4.12O - Outdoor Model"
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+              <h3 className="text-2xl mb-3 text-slate-900 font-bold">PMV1.4.12O</h3>
+              <p className="text-blue-600 font-semibold mb-4">Outdoor Model</p>
+              <p className="text-slate-600 leading-relaxed">
+                Designed for covered outdoor spaces and semi-protected areas. Features enhanced weather resistance for locations with partial exposure to elements.
+              </p>
+            </motion.div>
+
+            {/* Fully Enclosed Outdoor Model */}
+            <motion.div
+              initial={{ opacity: 0, y: 80, rotateX: -20 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+              style={{ perspective: "1000px" }}
+              whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)' }}
+              className="p-8 bg-white border-2 border-blue-200 rounded-xl transition-all group hover:border-blue-600 relative"
+            >
+              <div className="absolute -top-3 -right-3 px-4 py-1 bg-blue-600 text-white rounded-full text-sm font-semibold shadow-lg">
+                Most Durable
+              </div>
+              <div className="relative rounded-xl overflow-hidden mb-6 border-2 border-blue-100">
+                <ImageWithFallback
+                  src={vend3Image}
+                  alt="PMV1.4.12FOC - Fully Enclosed Outdoor Model"
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+              <h3 className="text-2xl mb-3 text-slate-900 font-bold">PMV1.4.12FOC</h3>
+              <p className="text-blue-600 font-semibold mb-4">Fully Enclosed Outdoor</p>
+              <p className="text-slate-600 leading-relaxed">
+                Maximum protection for any outdoor environment. Fully enclosed design withstands extreme weather conditions. Ideal for exposed locations and harsh climates.
+              </p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -948,6 +1070,188 @@ export function ProductPage({ onNavigate }: ProductPageProps) {
         </div>
       </section>
 
+      {/* NAMA Compliance Section */}
+      <section className="relative py-24 bg-white">
+        {/* Curved Top Wave Design */}
+        <div className="absolute top-0 left-0 right-0 z-0">
+          <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#f8fafc" />
+          </svg>
+        </div>
+        {/* Curved Bottom Wave Design */}
+        <div className="absolute bottom-0 left-0 right-0 z-0">
+          <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#2563eb" />
+          </svg>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportConfig}
+            variants={fadeInUp}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl mb-4 text-slate-900 font-bold">
+              NAMA & HACCP <span className="text-blue-600">Compliance</span>
+            </h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+              Certified compliance with National Automatic Merchandising Association (NAMA) and HACCP food safety standards
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportConfig}
+            variants={staggerContainer}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {[
+              {
+                icon: Shield,
+                title: 'Food Safety Compliant',
+                description: 'Full HACCP and NAMA food safety certifications ensuring highest hygiene standards'
+              },
+              {
+                icon: Thermometer,
+                title: 'Temperature Controlled',
+                description: 'Precise temperature monitoring and control systems maintain food safety requirements'
+              },
+              {
+                icon: Wrench,
+                title: 'Easy-to-Clean Design',
+                description: 'Accessible components and surfaces designed for thorough cleaning and sanitization'
+              },
+              {
+                icon: Package,
+                title: 'Commercial-Grade Build',
+                description: 'NAMA-certified commercial construction meets industry standards for durability'
+              },
+              {
+                icon: Shield,
+                title: 'Secure Access Control',
+                description: 'Advanced security features protect inventory and ensure authorized access only'
+              },
+              {
+                icon: CheckCircle2,
+                title: 'Reliable Operation',
+                description: 'Built to NAMA specifications for consistent, dependable 24/7 performance'
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                variants={fadeInUp}
+                whileHover={{
+                  y: -4,
+                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+                  borderColor: '#2563eb'
+                }}
+                className="p-6 bg-white border-2 border-slate-200 rounded-xl transition-all group hover:border-blue-600"
+              >
+                <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:scale-110 transition-all">
+                  <feature.icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" />
+                </div>
+                <h3 className="text-xl mb-3 text-slate-900 font-semibold">{feature.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{feature.description}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Bell & Howell Partnership Section */}
+      <section className="relative py-24 bg-slate-50">
+        {/* Curved Top Wave Design */}
+        <div className="absolute top-0 left-0 right-0 z-0">
+          <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 0L60 15C120 30 240 60 360 75C480 90 600 90 720 82.5C840 75 960 60 1080 52.5C1200 45 1320 45 1380 45L1440 45V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="#ffffff" />
+          </svg>
+        </div>
+        {/* Curved Bottom Wave Design */}
+        <div className="absolute bottom-0 left-0 right-0 z-0">
+          <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#2563eb" />
+          </svg>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 80, rotateX: -20 }}
+            whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            style={{ perspective: "1000px" }}
+            className="grid lg:grid-cols-2 gap-12 items-center"
+          >
+            {/* Left Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <h2 className="text-4xl md:text-5xl mb-6 font-bold text-slate-900">
+                Nationwide Support by <span className="text-blue-600">Bell & Howell</span>
+              </h2>
+              <p className="text-xl text-slate-600 mb-6 leading-relaxed">
+                High Sierra Vending partners with Bell & Howell's nationwide technician network to provide rapid, on-site support for every Pizza Anytime™ machine across the lower 48 states.
+              </p>
+              <ul className="space-y-4 mb-8">
+                {[
+                  'Coast-to-coast service coverage',
+                  'Rapid response times for critical issues',
+                  'Certified technicians trained on our systems',
+                  'Complete parts and labor warranty',
+                  'Email and phone support for machine lifetime',
+                  'Preventive maintenance programs'
+                ].map((item, index) => (
+                  <motion.li
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
+                    className="flex items-center gap-3 text-slate-700"
+                  >
+                    <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <CheckCircle2 className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="text-lg">{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => navigate('/onsite-support')}
+                className="px-8 py-4 bg-blue-600 text-white rounded-lg shadow-lg font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Learn More About Support
+              </motion.button>
+            </motion.div>
+
+            {/* Right Content - Logo/Image Placeholder */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="relative"
+            >
+              <div className="p-12 bg-white border-2 border-slate-200 rounded-2xl shadow-xl">
+                <div className="text-center">
+                  <div className="text-5xl font-bold text-slate-900 mb-4">Bell & Howell</div>
+                  <div className="text-2xl text-blue-600 mb-6">Service Network</div>
+                  <p className="text-slate-600 text-lg leading-relaxed">
+                    Trusted nationwide service partner providing professional on-site technical support and maintenance for all Pizza Anytime vending machines.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="relative py-24 overflow-hidden bg-blue-600">
         {/* Curved Top Wave Design */}
@@ -986,7 +1290,7 @@ export function ProductPage({ onNavigate }: ProductPageProps) {
                   backgroundColor: 'rgba(255, 255, 255, 0.1)'
                 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => onNavigate('contact')}
+                onClick={() => navigate('/contact')}
                 className="px-10 py-5 border-2 border-white/50 rounded-lg transition-colors text-lg text-white font-semibold hover:bg-white/10"
               >
                 Contact Sales

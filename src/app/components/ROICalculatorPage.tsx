@@ -1,28 +1,29 @@
 import { motion } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { Calculator, TrendingUp, DollarSign, Calendar, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 
-interface ROICalculatorPageProps {
-  onNavigate: (page: string) => void;
-}
-
-export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
+export function ROICalculatorPage() {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     pricePerPizza: 12,
+    costOfGoods: 2.50,
     pizzasPerDay: 20,
     operatingDays: 30,
     machineCost: 50000,
-    monthlyMaintenance: 200,
-    monthlyUtilities: 150
+    rent: 0,
+    revenueShare: 0
   });
 
   const calculateROI = () => {
     const monthlyRevenue = inputs.pricePerPizza * inputs.pizzasPerDay * inputs.operatingDays;
-    const monthlyCosts = inputs.monthlyMaintenance + inputs.monthlyUtilities;
+    const costOfGoodsTotal = inputs.costOfGoods * inputs.pizzasPerDay * inputs.operatingDays;
+    const revenueShareCost = inputs.revenueShare > 0 ? (monthlyRevenue * inputs.revenueShare / 100) : 0;
+    const monthlyCosts = costOfGoodsTotal + inputs.rent + revenueShareCost;
     const monthlyProfit = monthlyRevenue - monthlyCosts;
     const annualProfit = monthlyProfit * 12;
     const roiPercentage = ((annualProfit - inputs.machineCost) / inputs.machineCost) * 100;
-    const paybackMonths = inputs.machineCost / monthlyProfit;
+    const paybackMonths = monthlyProfit > 0 ? inputs.machineCost / monthlyProfit : 0;
 
     return {
       monthlyRevenue,
@@ -105,6 +106,24 @@ export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
 
                 <div>
                   <label className="block text-sm mb-2 text-slate-700 font-medium">
+                    Cost of Goods per Pizza ($)
+                  </label>
+                  <input
+                    type="number"
+                    min="2.50"
+                    step="0.01"
+                    value={inputs.costOfGoods}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value) || 2.50;
+                      handleInputChange('costOfGoods', value < 2.50 ? 2.50 : value);
+                    }}
+                    className="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-600 transition-colors text-slate-900"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Minimum: $2.50</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm mb-2 text-slate-700 font-medium">
                     Pizzas per Day
                   </label>
                   <input
@@ -141,26 +160,53 @@ export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
 
                 <div>
                   <label className="block text-sm mb-2 text-slate-700 font-medium">
-                    Monthly Maintenance ($)
+                    Monthly Rent ($)
                   </label>
                   <input
                     type="number"
-                    value={inputs.monthlyMaintenance}
-                    onChange={(e) => handleInputChange('monthlyMaintenance', parseFloat(e.target.value) || 0)}
-                    className="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-600 transition-colors text-slate-900"
+                    value={inputs.rent}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value) || 0;
+                      handleInputChange('rent', value);
+                      if (value > 0) {
+                        handleInputChange('revenueShare', 0);
+                      }
+                    }}
+                    disabled={inputs.revenueShare > 0}
+                    className={`w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-600 transition-colors text-slate-900 ${
+                      inputs.revenueShare > 0 ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''
+                    }`}
                   />
+                  <p className="text-xs text-slate-500 mt-1">
+                    {inputs.revenueShare > 0 ? 'Disabled when Revenue Share is set' : 'Fixed monthly rent amount'}
+                  </p>
                 </div>
 
                 <div>
                   <label className="block text-sm mb-2 text-slate-700 font-medium">
-                    Monthly Utilities ($)
+                    Revenue Share (%)
                   </label>
                   <input
                     type="number"
-                    value={inputs.monthlyUtilities}
-                    onChange={(e) => handleInputChange('monthlyUtilities', parseFloat(e.target.value) || 0)}
-                    className="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-600 transition-colors text-slate-900"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value={inputs.revenueShare}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value) || 0;
+                      handleInputChange('revenueShare', value);
+                      if (value > 0) {
+                        handleInputChange('rent', 0);
+                      }
+                    }}
+                    disabled={inputs.rent > 0}
+                    className={`w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-600 transition-colors text-slate-900 ${
+                      inputs.rent > 0 ? 'opacity-50 cursor-not-allowed bg-slate-100' : ''
+                    }`}
                   />
+                  <p className="text-xs text-slate-500 mt-1">
+                    {inputs.rent > 0 ? 'Disabled when Rent is set' : 'Percentage of revenue paid to location'}
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -243,7 +289,7 @@ export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => onNavigate('request-access')}
+                onClick={() => navigate('/request-access')}
                 className="w-full px-8 py-4 bg-blue-600 text-white rounded-lg flex items-center justify-center gap-2 font-semibold hover:bg-blue-700 transition-colors text-lg"
               >
                 Get Started
@@ -272,7 +318,7 @@ export function ROICalculatorPage({ onNavigate }: ROICalculatorPageProps) {
                 boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)"
               }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => onNavigate('request-access')}
+              onClick={() => navigate('/request-access')}
               className="px-10 py-5 bg-white text-blue-600 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-colors inline-flex items-center gap-2"
             >
               Request Access

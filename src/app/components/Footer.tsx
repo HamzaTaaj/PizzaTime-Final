@@ -1,11 +1,11 @@
+import React from 'react';
 import { motion } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import logo from '@/assets/Untitled.svg';
 
-interface FooterProps {
-  onNavigate: (page: string) => void;
-}
-
-export function Footer({ onNavigate }: FooterProps) {
+export function Footer() {
+  const navigate = useNavigate();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -14,10 +14,8 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Company Info */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-md">
-                <span className="text-white text-xl">🍕</span>
-              </div>
+            <div className="flex items-center gap-4 mb-6">
+              <img src={logo} alt="Pizza Anytime Logo" className="w-16 h-16 object-contain" />
               <span className="text-xl font-bold text-slate-900">
                 Pizza <span className="text-blue-600">Anytime</span>
               </span>
@@ -63,7 +61,7 @@ export function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-3">
               <li>
                 <button
-                  onClick={() => onNavigate('home')}
+                  onClick={() => navigate('/')}
                   className="text-slate-600 hover:text-blue-600 transition-colors"
                 >
                   Home
@@ -71,7 +69,7 @@ export function Footer({ onNavigate }: FooterProps) {
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('product')}
+                  onClick={() => navigate('/product')}
                   className="text-slate-600 hover:text-blue-600 transition-colors"
                 >
                   Our Machine
@@ -79,7 +77,7 @@ export function Footer({ onNavigate }: FooterProps) {
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('blog')}
+                  onClick={() => navigate('/blog')}
                   className="text-slate-600 hover:text-blue-600 transition-colors"
                 >
                   Latest Updates
@@ -87,7 +85,7 @@ export function Footer({ onNavigate }: FooterProps) {
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('manual')}
+                  onClick={() => navigate('/manual')}
                   className="text-slate-600 hover:text-blue-600 transition-colors"
                 >
                   User Manual
@@ -102,7 +100,7 @@ export function Footer({ onNavigate }: FooterProps) {
             <ul className="space-y-3">
               <li>
                 <button
-                  onClick={() => onNavigate('onsite-support')}
+                  onClick={() => navigate('/onsite-support')}
                   className="text-slate-600 hover:text-blue-600 transition-colors"
                 >
                   Onsite Support
@@ -110,7 +108,7 @@ export function Footer({ onNavigate }: FooterProps) {
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('privacy-terms')}
+                  onClick={() => navigate('/privacy-terms')}
                   className="text-slate-600 hover:text-blue-600 transition-colors"
                 >
                   Privacy Policy
@@ -118,7 +116,7 @@ export function Footer({ onNavigate }: FooterProps) {
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('contact')}
+                  onClick={() => navigate('/contact')}
                   className="text-slate-600 hover:text-blue-600 transition-colors"
                 >
                   Contact Us
@@ -126,7 +124,7 @@ export function Footer({ onNavigate }: FooterProps) {
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('company')}
+                  onClick={() => navigate('/company')}
                   className="text-slate-600 hover:text-blue-600 transition-colors"
                 >
                   About Us
@@ -170,13 +168,13 @@ export function Footer({ onNavigate }: FooterProps) {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
               <button
-                onClick={() => onNavigate('privacy-terms')}
+                onClick={() => navigate('/privacy-terms')}
                 className="text-slate-600 hover:text-blue-600 transition-colors"
               >
                 Privacy Policy
               </button>
               <button
-                onClick={() => onNavigate('privacy-terms')}
+                onClick={() => navigate('/privacy-terms')}
                 className="text-slate-600 hover:text-blue-600 transition-colors"
               >
                 Terms of Service

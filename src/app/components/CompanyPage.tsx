@@ -1,11 +1,9 @@
 import { motion } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { Mail, Phone, MapPin, Building2, Users, Target, Award, Globe, Heart, Lightbulb, CheckCircle2 } from 'lucide-react';
 
-interface CompanyPageProps {
-  onNavigate?: (page: string) => void;
-}
-
-export function CompanyPage({ onNavigate }: CompanyPageProps) {
+export function CompanyPage() {
+  const navigate = useNavigate();
   const sixPoints = [
     {
       icon: Target,
@@ -217,7 +215,7 @@ export function CompanyPage({ onNavigate }: CompanyPageProps) {
               Fill out our request access form to begin your journey with Pizza Anytime
             </p>
             <motion.button
-              onClick={() => onNavigate?.('request-access')}
+              onClick={() => navigate('/request-access')}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"

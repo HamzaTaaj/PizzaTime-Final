@@ -1,14 +1,11 @@
 import { motion } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, Eye, EyeOff, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
 import { saveAuthToken, saveAuthUser } from '../utils/auth';
 
-interface LoginPageProps {
-  onNavigate?: (page: string) => void;
-  onLoginSuccess?: () => void;
-}
-
-export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps = {}) {
+export function LoginPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -50,11 +47,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps = {}) {
       saveAuthUser(data.user);
 
       // Navigate to admin dashboard
-      if (onLoginSuccess) {
-        onLoginSuccess();
-      } else if (onNavigate) {
-        onNavigate('admin');
-      }
+      navigate('/admin');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed. Please try again.');
     } finally {
@@ -256,18 +249,12 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps = {}) {
             <div className="text-center">
               <p className="text-sm text-slate-600">
                 Don't have an account?{' '}
-                {onNavigate ? (
-                  <button
-                    onClick={() => onNavigate('request-access')}
-                    className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
-                  >
-                    Request Access
-                  </button>
-                ) : (
-                  <a href="#" className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors">
-                    Request Access
-                  </a>
-                )}
+                <button
+                  onClick={() => navigate('/request-access')}
+                  className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
+                >
+                  Request Access
+                </button>
               </p>
             </div>
           </motion.div>

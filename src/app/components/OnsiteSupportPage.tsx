@@ -1,11 +1,9 @@
 import { motion } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { Wrench, Clock, Phone, CheckCircle2, Truck, Shield, Headphones, ArrowRight } from 'lucide-react';
 
-interface OnsiteSupportPageProps {
-  onNavigate: (page: string) => void;
-}
-
-export function OnsiteSupportPage({ onNavigate }: OnsiteSupportPageProps) {
+export function OnsiteSupportPage() {
+  const navigate = useNavigate();
   const supportServices = [
     {
       icon: Wrench,
@@ -33,44 +31,6 @@ export function OnsiteSupportPage({ onNavigate }: OnsiteSupportPageProps) {
     }
   ];
 
-  const supportTiers = [
-    {
-      name: 'Basic Support',
-      description: 'Essential support for standard operations',
-      features: [
-        'Business hours support',
-        'Email support',
-        'Remote diagnostics',
-        'Software updates'
-      ],
-      price: 'Included'
-    },
-    {
-      name: 'Premium Support',
-      description: 'Enhanced support with priority response',
-      features: [
-        '24/7 phone support',
-        'Priority response',
-        'Quarterly maintenance',
-        'Dedicated account manager',
-        'Performance reports'
-      ],
-      price: 'Custom'
-    },
-    {
-      name: 'Enterprise Support',
-      description: 'Comprehensive support for large deployments',
-      features: [
-        '24/7 dedicated support',
-        'Onsite technician',
-        'Monthly maintenance',
-        'Custom SLA',
-        'Advanced analytics',
-        'Training programs'
-      ],
-      price: 'Custom'
-    }
-  ];
 
   return (
     <div className="min-h-screen pt-20 bg-white">
@@ -159,7 +119,7 @@ export function OnsiteSupportPage({ onNavigate }: OnsiteSupportPageProps) {
         </div>
       </section>
 
-      {/* Support Tiers Section */}
+      {/* Warranty Information Section */}
       <section className="relative py-24 bg-slate-50">
         {/* Curved Top Wave Design */}
         <div className="absolute top-0 left-0 right-0 z-0">
@@ -170,7 +130,7 @@ export function OnsiteSupportPage({ onNavigate }: OnsiteSupportPageProps) {
         {/* Curved Bottom Wave Design */}
         <div className="absolute bottom-0 left-0 right-0 z-0">
           <svg className="w-full h-24" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#ffffff"/>
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#2563eb"/>
           </svg>
         </div>
         
@@ -182,47 +142,76 @@ export function OnsiteSupportPage({ onNavigate }: OnsiteSupportPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl mb-4 font-bold text-slate-900">
-              Support <span className="text-blue-600">Tiers</span>
+              Complete <span className="text-blue-600">Warranty Coverage</span>
             </h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Choose the support level that fits your business needs
+              Every machine ships with comprehensive warranty and support at no additional cost
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {supportTiers.map((tier, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -4 }}
-                className={`p-8 rounded-xl border-2 transition-all ${
-                  index === 1 
-                    ? 'bg-blue-600 border-blue-600 text-white' 
-                    : 'bg-white border-slate-200 hover:border-blue-600'
-                }`}
-              >
-                <div className={`text-sm font-semibold mb-2 ${index === 1 ? 'text-blue-100' : 'text-blue-600'}`}>
-                  {tier.price}
-                </div>
-                <h3 className={`text-2xl mb-2 font-semibold ${index === 1 ? 'text-white' : 'text-slate-900'}`}>
-                  {tier.name}
-                </h3>
-                <p className={`mb-6 ${index === 1 ? 'text-blue-50' : 'text-slate-600'}`}>
-                  {tier.description}
-                </p>
-                <ul className="space-y-3">
-                  {tier.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <CheckCircle2 className={`w-5 h-5 flex-shrink-0 mt-0.5 ${index === 1 ? 'text-blue-200' : 'text-blue-600'}`} />
-                      <span className={index === 1 ? 'text-blue-50' : 'text-slate-600'}>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
+          <div className="grid md:grid-cols-2 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -4 }}
+              className="p-8 bg-white border-2 border-slate-200 rounded-xl transition-all hover:border-blue-600"
+            >
+              <div className="w-16 h-16 bg-blue-50 rounded-lg flex items-center justify-center mb-6">
+                <Shield className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-2xl mb-4 font-semibold text-slate-900">
+                Parts & Labor Warranty
+              </h3>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                Complete parts and labor warranty included with every machine purchase. No hidden fees or additional costs.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  'Full parts coverage',
+                  'Labor costs included',
+                  'No deductibles',
+                  'Nationwide service network'
+                ].map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5 text-blue-600" />
+                    <span className="text-slate-600">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              whileHover={{ y: -4 }}
+              className="p-8 bg-white border-2 border-slate-200 rounded-xl transition-all hover:border-blue-600"
+            >
+              <div className="w-16 h-16 bg-blue-50 rounded-lg flex items-center justify-center mb-6">
+                <Headphones className="w-8 h-8 text-blue-600" />
+              </div>
+              <h3 className="text-2xl mb-4 font-semibold text-slate-900">
+                Lifetime Support
+              </h3>
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                Email and phone support included at no cost for the entire life of your machine. We're here whenever you need us.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  'Email support included',
+                  'Phone support included',
+                  'Technical assistance',
+                  'For machine lifetime'
+                ].map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5 text-blue-600" />
+                    <span className="text-slate-600">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -242,7 +231,7 @@ export function OnsiteSupportPage({ onNavigate }: OnsiteSupportPageProps) {
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <motion.button
-                onClick={() => onNavigate('request-access')}
+                onClick={() => navigate('/request-access')}
                 whileHover={{ 
                   scale: 1.05,
                   boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)"
@@ -254,7 +243,7 @@ export function OnsiteSupportPage({ onNavigate }: OnsiteSupportPageProps) {
                 <ArrowRight className="w-5 h-5" />
               </motion.button>
               <motion.button
-                onClick={() => onNavigate('contact')}
+                onClick={() => navigate('/contact')}
                 whileHover={{ 
                   scale: 1.05
                 }}

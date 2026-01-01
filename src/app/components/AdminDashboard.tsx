@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Lock, 
   LogOut, 
@@ -30,12 +31,8 @@ interface AccessRequest {
   status: string;
 }
 
-interface AdminDashboardProps {
-  onNavigate?: (page: string) => void;
-  onLogout?: () => void;
-}
-
-export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps = {}) {
+export function AdminDashboard() {
+  const navigate = useNavigate();
   const [requests, setRequests] = useState<AccessRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -89,11 +86,7 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps = {
 
   const handleLogout = () => {
     removeAuthToken();
-    if (onLogout) {
-      onLogout();
-    } else if (onNavigate) {
-      onNavigate('login');
-    }
+    navigate('/login');
   };
 
   const filteredRequests = requests.filter(req => {

@@ -1,13 +1,11 @@
 import { motion } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { Calendar, Tag, ArrowRight, TrendingUp, Award, Users, Globe } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { fadeInUp, staggerContainer, viewportConfig } from '../utils/animations';
 
-interface BlogPageProps {
-  onNavigate: (page: string) => void;
-}
-
-export function BlogPage({ onNavigate }: BlogPageProps) {
+export function BlogPage() {
+  const navigate = useNavigate();
   const pressReleases = [
     {
       id: 1,
@@ -198,7 +196,7 @@ export function BlogPage({ onNavigate }: BlogPageProps) {
 
                     <div className="mt-4">
                       <motion.button
-                        onClick={() => onNavigate('blog')}
+                        onClick={() => navigate('/blog')}
                         whileHover={{ x: 5 }}
                         className="flex items-center gap-2 text-blue-600 group-hover:text-blue-700 transition-colors font-medium"
                       >

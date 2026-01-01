@@ -1,11 +1,9 @@
 import { motion } from 'motion/react';
+import { useNavigate } from 'react-router-dom';
 import { Clock, Shield, Zap, TrendingUp, Users, CheckCircle2, ArrowRight } from 'lucide-react';
 
-interface WhyPizzaAnytimePageProps {
-  onNavigate: (page: string) => void;
-}
-
-export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
+export function WhyPizzaAnytimePage() {
+  const navigate = useNavigate();
   const advantages = [
     {
       icon: Zap,
@@ -233,7 +231,7 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
                   boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)"
                 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => onNavigate('product')}
+                onClick={() => navigate('/product')}
                 className="px-10 py-5 bg-white text-blue-600 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-colors inline-flex items-center gap-2"
               >
                 View Machine Details
@@ -244,7 +242,7 @@ export function WhyPizzaAnytimePage({ onNavigate }: WhyPizzaAnytimePageProps) {
                   scale: 1.05
                 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => onNavigate('contact')}
+                onClick={() => navigate('/contact')}
                 className="px-10 py-5 border-2 border-white/50 rounded-lg hover:bg-white/10 transition-colors text-white font-semibold text-lg"
               >
                 Contact Us

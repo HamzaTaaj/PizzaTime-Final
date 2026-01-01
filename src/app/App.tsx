@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from './components/Header';
 import { HomePage } from './components/HomePage';
@@ -19,9 +20,47 @@ import { Footer } from './components/Footer';
 import { ArrowUp } from 'lucide-react';
 import { isAuthenticated } from './utils/auth';
 
+// Protected Route Component
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  if (!isAuthenticated()) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
+// Page wrapper with animation
+function PageWrapper({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+  
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ duration: 0.3 }}
+        className="overflow-visible"
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 export default function App() {
-  const [currentPage, setCurrentPage] = useState('home');
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,25 +71,10 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavigate = (page: string) => {
-    // If navigating to admin, check authentication
-    if (page === 'admin' && !isAuthenticated()) {
-      setCurrentPage('login');
-    } else {
-    setCurrentPage(page);
-    }
+  // Scroll to top on route change
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleLoginSuccess = () => {
-    setCurrentPage('admin');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleLogout = () => {
-    setCurrentPage('login');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, [location.pathname]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -58,35 +82,37 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden overflow-y-visible">
-      <Header currentPage={currentPage} onNavigate={handleNavigate} />
+      <Header />
       
-      <AnimatePresence mode="wait">
-        <motion.main
-          key={currentPage}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-          className="overflow-visible"
-        >
-          {currentPage === 'home' && <HomePage onNavigate={handleNavigate} />}
-          {currentPage === 'product' && <ProductPage onNavigate={handleNavigate} />}
-          {currentPage === 'blog' && <BlogPage onNavigate={handleNavigate} />}
-          {currentPage === 'manual' && <ManualPage onNavigate={handleNavigate} />}
-          {currentPage === 'request-access' && <RequestAccessPage />}
-          {currentPage === 'landing' && <LandingPage onNavigate={handleNavigate} />}
-          {currentPage === 'company' && <CompanyPage onNavigate={handleNavigate} />}
-          {currentPage === 'why-pizza-anytime' && <WhyPizzaAnytimePage onNavigate={handleNavigate} />}
-          {currentPage === 'onsite-support' && <OnsiteSupportPage onNavigate={handleNavigate} />}
-          {currentPage === 'roi-calculator' && <ROICalculatorPage onNavigate={handleNavigate} />}
-          {currentPage === 'privacy-terms' && <PrivacyTermsPage />}
-          {currentPage === 'contact' && <ContactPage />}
-          {currentPage === 'login' && <LoginPage onNavigate={handleNavigate} onLoginSuccess={handleLoginSuccess} />}
-          {currentPage === 'admin' && <AdminDashboard onNavigate={handleNavigate} onLogout={handleLogout} />}
-        </motion.main>
-      </AnimatePresence>
+      <main className="overflow-visible">
+        <PageWrapper>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/product" element={<ProductPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/manual" element={<ManualPage />} />
+            <Route path="/request-access" element={<RequestAccessPage />} />
+            <Route path="/landing" element={<LandingPage />} />
+            <Route path="/company" element={<CompanyPage />} />
+            <Route path="/why-pizza-anytime" element={<WhyPizzaAnytimePage />} />
+            <Route path="/onsite-support" element={<OnsiteSupportPage />} />
+            <Route path="/roi-calculator" element={<ROICalculatorPage />} />
+            <Route path="/privacy-terms" element={<PrivacyTermsPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route 
+              path="/admin" 
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } 
+            />
+          </Routes>
+        </PageWrapper>
+      </main>
 
-      <Footer onNavigate={handleNavigate} />
+      <Footer />
 
       {/* Scroll to Top Button */}
       <AnimatePresence>
