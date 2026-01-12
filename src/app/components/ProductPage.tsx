@@ -5,10 +5,10 @@ import { Cpu, Thermometer, Gauge, Wifi, Shield, Wrench, Package, Zap, CheckCircl
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { fadeInUp, staggerContainer, viewportConfig, slideInLeft, slideInRight, scaleUp } from '../utils/animations';
 import vend1Video from '@/assets/vend.mp4';
-import vend1Image from '@/assets/machine2-removebg-preview.png';
-import vend2Image from '@/assets/machine2-removebg-preview.png';
-import vend3Image from '@/assets/machine2-removebg-preview.png';
-import vend4Image from '@/assets/machine2-removebg-preview.png';
+import vend1Image from '@/assets/vend1.png';
+import vend2Image from '@/assets/vend1.png';
+import vend3Image from '@/assets/vend1.png';
+import vend4Image from '@/assets/vend1.png';
 
 // Animated Counter Component
 function AnimatedCounter({ value, suffix = '', prefix = '', duration = 2 }: { value: number | string; suffix?: string; prefix?: string; duration?: number }) {

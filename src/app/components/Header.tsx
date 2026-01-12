@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import logo from '@/assets/logo-variation-7-blue-white-accent.svg';
+import { useAuth } from "../context/AuthContext";
+import logo from '@/assets/pizza-anytime-logo.svg';
 
 export function Header() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [aboutUsOpen, setAboutUsOpen] = useState(false);
@@ -22,15 +24,11 @@ export function Header() {
         <div className="flex items-center justify-between h-20 w-full">
           {/* Logo */}
           <motion.div
-            className="flex items-center gap-4 cursor-pointer"
+            className="flex items-center cursor-pointer"
             onClick={() => navigate("/")}
             whileHover={{ scale: 1.02 }}
           >
-            <img src={logo} alt="Pizza Anytime Logo" className="w-15 h-20 object-contain" />
-            <span className="text-2xl tracking-tight font-bold text-slate-900">
-              Pizza{" "}
-              <span className="text-blue-600">Anytime</span>
-            </span>
+            <img src={logo} alt="Pizza Anytime Logo" className="h-16 sm:h-20 md:h-24 max-w-none sm:max-w-none md:max-w-none object-contain" />
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -200,13 +198,13 @@ export function Header() {
 
             {/* 5. Marketing */}
             <motion.button
-              onClick={() => navigate("/landing")}
+              onClick={() => navigate("/marketing")}
               whileHover={{ 
                 scale: 1.02,
                 color: "#2563eb"
               }}
               whileTap={{ scale: 0.98 }}
-              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${isActive("/landing") ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
+              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${isActive("/marketing") ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
             >
               <motion.div
                 className="absolute inset-0 bg-blue-50 rounded-lg z-0"
@@ -214,7 +212,7 @@ export function Header() {
                 whileHover={{ opacity: 1 }}
               />
               <span className="relative z-10">Marketing</span>
-              {isActive("/landing") && (
+              {isActive("/marketing") && (
                 <motion.div
                   className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 z-20 rounded-full"
                   layoutId="activeTab"
@@ -222,29 +220,31 @@ export function Header() {
               )}
             </motion.button>
 
-            {/* 6. Request Access */}
-            <motion.button
-              onClick={() => navigate("/request-access")}
-              whileHover={{ 
-                scale: 1.02,
-                color: "#2563eb"
-              }}
-              whileTap={{ scale: 0.98 }}
-              className={`relative px-3 py-2 rounded-lg transition-all font-medium ${isActive("/request-access") ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
-            >
-              <motion.div
-                className="absolute inset-0 bg-blue-50 rounded-lg z-0"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-              />
-              <span className="relative z-10">Request Access</span>
-              {isActive("/request-access") && (
+            {/* 6. Request Access - Only show if not logged in */}
+            {!isAuthenticated && (
+              <motion.button
+                onClick={() => navigate("/request-access")}
+                whileHover={{ 
+                  scale: 1.02,
+                  color: "#2563eb"
+                }}
+                whileTap={{ scale: 0.98 }}
+                className={`relative px-3 py-2 rounded-lg transition-all font-medium ${isActive("/request-access") ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}`}
+              >
                 <motion.div
-                  className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 z-20 rounded-full"
-                  layoutId="activeTab"
+                  className="absolute inset-0 bg-blue-50 rounded-lg z-0"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
                 />
-              )}
-            </motion.button>
+                <span className="relative z-10">Request Access</span>
+                {isActive("/request-access") && (
+                  <motion.div
+                    className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-blue-600 z-20 rounded-full"
+                    layoutId="activeTab"
+                  />
+                )}
+              </motion.button>
+            )}
 
             {/* 7. Contact Us */}
             <motion.button
@@ -513,7 +513,7 @@ export function Header() {
                 {/* 5. Marketing */}
                 <motion.button
                   onClick={() => {
-                    navigate("/landing");
+                    navigate("/marketing");
                     setMobileMenuOpen(false);
                   }}
                   whileHover={{ 
@@ -527,22 +527,24 @@ export function Header() {
                   Marketing
                 </motion.button>
                 
-                {/* 6. Request Access */}
-                <motion.button
-                  onClick={() => {
-                    navigate("/request-access");
-                    setMobileMenuOpen(false);
-                  }}
-                  whileHover={{ 
-                    x: 8,
-                    backgroundColor: "#f1f5f9",
-                    color: "#2563eb"
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  className="block w-full text-left px-4 py-2 text-slate-700 rounded-lg transition-all font-medium"
-                >
-                  Request Access
-                </motion.button>
+                {/* 6. Request Access - Only show if not logged in */}
+                {!isAuthenticated && (
+                  <motion.button
+                    onClick={() => {
+                      navigate("/request-access");
+                      setMobileMenuOpen(false);
+                    }}
+                    whileHover={{ 
+                      x: 8,
+                      backgroundColor: "#f1f5f9",
+                      color: "#2563eb"
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                    className="block w-full text-left px-4 py-2 text-slate-700 rounded-lg transition-all font-medium"
+                  >
+                    Request Access
+                  </motion.button>
+                )}
                 
                 {/* 7. Contact Us */}
                 <motion.button

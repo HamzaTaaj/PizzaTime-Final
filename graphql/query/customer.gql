@@ -1,0 +1,11 @@
+query customer($customerAccessToken: String!) {
+  customer(customerAccessToken: $customerAccessToken) {
+    id
+    email
+    firstName
+    lastName
+    phone
+    acceptsMarketing
+    tags
+  }
+}

@@ -1,50 +1,95 @@
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Lock, Mail, User, MapPin, CheckCircle2, Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Lock, Mail, User, MapPin, CheckCircle2, Loader2, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import { fadeInUp, staggerContainer, viewportConfig, slideInLeft, slideInRight } from '../utils/animations';
 
 export function RequestAccessPage() {
+  const navigate = useNavigate();
+  const { signUp, isLoading: submitting, isAuthenticated, isLoading: authLoading } = useAuth();
+  
+  // Redirect to dashboard if already logged in
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, authLoading, navigate]);
+  
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen pt-20 bg-white flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      </div>
+    );
+  }
+  
+  // Don't render form if already authenticated (will redirect)
+  if (isAuthenticated) {
+    return null;
+  }
+  
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
+    password: '',
+    confirmPassword: '',
     company: '',
     location: '',
     machineCount: '',
     role: '',
     message: ''
   });
-  const [submitting, setSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error' | 'email_taken'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
     setSubmitStatus('idle');
     setErrorMessage('');
 
-    try {
-      const response = await fetch('/api/submit-access-request', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setSubmitStatus('error');
+      setErrorMessage('Passwords do not match');
+      return;
+    }
 
-      const data = await response.json();
+    // Validate password strength
+    if (formData.password.length < 8) {
+      setSubmitStatus('error');
+      setErrorMessage('Password must be at least 8 characters long');
+      return;
+    }
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to submit request');
-      }
+    // Use signUp from AuthContext with all form fields
+    const result = await signUp({
+      email: formData.email,
+      password: formData.password,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      acceptsMarketing: true,
+      // Additional business fields
+      company: formData.company,
+      location: formData.location,
+      machineCount: formData.machineCount,
+      role: formData.role,
+      message: formData.message,
+    });
 
+    if (result.success) {
       setSubmitStatus('success');
       // Reset form
       setFormData({
         firstName: '',
         lastName: '',
         email: '',
+        password: '',
+        confirmPassword: '',
         company: '',
         location: '',
         machineCount: '',
@@ -52,15 +97,17 @@ export function RequestAccessPage() {
         message: ''
       });
       
-      // Auto-hide success message after 5 seconds
+      // Redirect to dashboard after 2 seconds
       setTimeout(() => {
-        setSubmitStatus('idle');
-      }, 5000);
-    } catch (error) {
+        navigate('/dashboard');
+      }, 2000);
+    } else if (result.errorCode === 'EMAIL_TAKEN') {
+      // Email already exists - prompt sign in
+      setSubmitStatus('email_taken');
+      setErrorMessage('Please sign in to update your request details.');
+    } else {
       setSubmitStatus('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Failed to submit request. Please try again.');
-    } finally {
-      setSubmitting(false);
+      setErrorMessage(result.error || 'Failed to create account. Please try again.');
     }
   };
 
@@ -269,6 +316,68 @@ export function RequestAccessPage() {
                     </div>
                   </div>
 
+                  {/* Password Fields */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="password" className="block text-sm mb-2 text-slate-700 font-medium">
+                        Password *
+                      </label>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          id="password"
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          required
+                          minLength={8}
+                          className="w-full pl-12 pr-12 py-3 bg-white border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-600 transition-colors text-slate-900 placeholder-slate-400"
+                          placeholder="Min. 8 characters"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                        >
+                          {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="confirmPassword" className="block text-sm mb-2 text-slate-700 font-medium">
+                        Confirm Password *
+                      </label>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                        <input
+                          type={showConfirmPassword ? "text" : "password"}
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          required
+                          minLength={8}
+                          className="w-full pl-12 pr-12 py-3 bg-white border-2 border-slate-200 rounded-lg focus:outline-none focus:border-blue-600 transition-colors text-slate-900 placeholder-slate-400"
+                          placeholder="Confirm password"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                        >
+                          {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Password Requirements Hint */}
+                  <p className="text-xs text-slate-500 -mt-2">
+                    Password must be at least 8 characters long
+                  </p>
+
                   {/* Location */}
                   <div>
                     <label htmlFor="location" className="block text-sm mb-2 text-slate-700 font-medium">
@@ -353,6 +462,26 @@ export function RequestAccessPage() {
                       <div className="flex items-center gap-2 text-green-700">
                         <CheckCircle2 className="w-5 h-5" />
                         <p className="font-medium">Request submitted successfully! We'll be in touch soon.</p>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {submitStatus === 'email_taken' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-4 bg-amber-50 border-2 border-amber-200 rounded-lg"
+                    >
+                      <div className="text-amber-800">
+                        <p className="font-medium mb-2">An account with this email already exists.</p>
+                        <p className="text-sm mb-3">{errorMessage}</p>
+                        <button
+                          type="button"
+                          onClick={() => navigate('/login')}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
+                        >
+                          Sign In to Your Account
+                        </button>
                       </div>
                     </motion.div>
                   )}

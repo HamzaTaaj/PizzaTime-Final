@@ -1,9 +1,10 @@
+/// <reference types="vite/client" />
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, TrendingUp, Clock, DollarSign, Users, Zap, Shield, Send, User, Mail } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import vend1Image from '@/assets/machine2-removebg-preview.png';
-import { useState, useRef, useEffect } from 'react';
 
 // Animated Counter Component
 function AnimatedCounter({ value, suffix = '', prefix = '', duration = 2 }: { value: number | string; suffix?: string; prefix?: string; duration?: number }) {
@@ -618,7 +619,7 @@ export function LandingPage() {
                 boxShadow: "0 20px 40px rgba(37, 99, 235, 0.4)"
               }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => onNavigate('request-access')}
+              onClick={() => navigate('/request-access')}
               className="px-12 py-5 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
             >
               Get Started Now

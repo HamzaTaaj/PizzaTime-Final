@@ -1,57 +1,46 @@
 import { motion } from 'motion/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Lock, Mail, Eye, EyeOff, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
-import { useState } from 'react';
-import { saveAuthToken, saveAuthUser } from '../utils/auth';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const { signIn, isLoading: submitting, error: authError, isAuthenticated, clearError } = useAuth();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [localError, setLocalError] = useState('');
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Sync auth error to local error
+  useEffect(() => {
+    if (authError) {
+      setLocalError(authError);
+    }
+  }, [authError]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitting(true);
-    setError('');
+    setLocalError('');
+    clearError();
 
-    try {
-      const response = await fetch('/api/admin-login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
+    const result = await signIn(formData.email, formData.password);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
-      // Check if store owner (redirect to Shopify)
-      if (data.redirectTo) {
-        // Store owner login - redirect to Shopify store
-        window.location.href = data.redirectTo;
-        return;
-      }
-
-      // Admin login - save token and navigate to dashboard
-      saveAuthToken(data.token);
-      saveAuthUser(data.user);
-
-      // Navigate to admin dashboard
-      navigate('/admin');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed. Please try again.');
-    } finally {
-      setSubmitting(false);
+    if (result.success) {
+      navigate('/dashboard');
+    } else if (result.error) {
+      setLocalError(result.error);
     }
   };
 
@@ -135,14 +124,14 @@ export function LoginPage() {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Error Message */}
-              {error && (
+              {localError && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2"
                 >
                   <AlertCircle className="w-5 h-5 text-red-600" />
-                  <p className="text-red-700 text-sm">{error}</p>
+                  <p className="text-red-700 text-sm">{localError}</p>
                 </motion.div>
               )}
 
@@ -204,9 +193,9 @@ export function LoginPage() {
                   />
                   <span className="text-sm text-slate-600">Remember me</span>
                 </label>
-                <a href="#" className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors">
+                <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors">
                   Forgot password?
-                </a>
+                </Link>
               </div>
 
               {/* Submit Button */}
