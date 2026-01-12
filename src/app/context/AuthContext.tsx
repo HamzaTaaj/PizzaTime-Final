@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import { gql } from "@apollo/client";
-import { useMutation, useApolloClient } from "@apollo/client/react";
+import { useApolloClient, useMutation } from "@apollo/client/react";
 
 /* ------------------------------------------------------------------ */
 /* GRAPHQL */
@@ -151,9 +151,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
-  if (!ctx) {
-    throw new Error("useAuth must be used inside AuthProvider");
-  }
+  if (!ctx) throw new Error("useAuth must be used inside AuthProvider");
   return ctx;
 };
 
@@ -193,7 +191,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(AUTH_CUSTOMER_KEY);
   };
 
-  /* ---------------- FETCH REAL CUSTOMER ---------------- */
+  /* ---------------- FETCH CUSTOMER ---------------- */
 
   const hydrateCustomer = async (token: string) => {
     const res = await apolloClient.query({
@@ -202,15 +200,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       fetchPolicy: "no-cache",
     });
 
-    const shopifyCustomer = res.data?.customer;
-
-    if (shopifyCustomer) {
-      localStorage.setItem(AUTH_CUSTOMER_KEY, JSON.stringify(shopifyCustomer));
-      setCustomer(shopifyCustomer);
+    const data = res.data as any;
+    if (data?.customer) {
+      localStorage.setItem(AUTH_CUSTOMER_KEY, JSON.stringify(data.customer));
+      setCustomer(data.customer);
     }
   };
 
-  /* ---------------- AUTH ACTIONS ---------------- */
+  /* ---------------- AUTH ---------------- */
 
   const signIn = useCallback(async (email: string, password: string) => {
     setIsLoading(true);
@@ -221,15 +218,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         variables: { input: { email, password } },
       });
 
-      const tokenData =
-        res.data?.customerAccessTokenCreate?.customerAccessToken;
+      const data = res.data as any;
+      const token = data?.customerAccessTokenCreate?.customerAccessToken;
 
-      if (!tokenData) {
-        throw new Error("Invalid email or password");
-      }
+      if (!token) throw new Error("Invalid email or password");
 
-      storeToken(tokenData.accessToken, tokenData.expiresAt);
-      await hydrateCustomer(tokenData.accessToken);
+      storeToken(token.accessToken, token.expiresAt);
+      await hydrateCustomer(token.accessToken);
 
       setIsLoading(false);
       return { success: true };
@@ -245,9 +240,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setError(null);
 
     try {
-      await createCustomer({
-        variables: { input: params },
-      });
+      await createCustomer({ variables: { input: params } });
 
       const tokenRes = await createAccessToken({
         variables: {
@@ -255,15 +248,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         },
       });
 
-      const tokenData =
-        tokenRes.data?.customerAccessTokenCreate?.customerAccessToken;
+      const data = tokenRes.data as any;
+      const token = data?.customerAccessTokenCreate?.customerAccessToken;
 
-      if (!tokenData) {
-        throw new Error("Account created but login failed");
-      }
+      if (!token) throw new Error("Account created but login failed");
 
-      storeToken(tokenData.accessToken, tokenData.expiresAt);
-      await hydrateCustomer(tokenData.accessToken);
+      storeToken(token.accessToken, token.expiresAt);
+      await hydrateCustomer(token.accessToken);
 
       setIsLoading(false);
       return { success: true };
@@ -278,9 +269,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const token = getToken();
     if (token) {
       try {
-        await deleteAccessToken({
-          variables: { customerAccessToken: token },
-        });
+        await deleteAccessToken({ variables: { customerAccessToken: token } });
       } catch {}
     }
     clearSession();
