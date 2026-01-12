@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { Header } from './components/Header';
@@ -15,13 +15,43 @@ import { ROICalculatorPage } from './components/ROICalculatorPage';
 import { PrivacyTermsPage } from './components/PrivacyTermsPage';
 import { ContactPage } from './components/ContactPage';
 import { LoginPage } from './components/LoginPage';
+import { ForgotPasswordPage } from './components/ForgotPasswordPage';
+import { ResetPasswordPage } from './components/ResetPasswordPage';
 import { AdminDashboard } from './components/AdminDashboard';
+import { ClientDashboard } from './components/ClientDashboard';
 import { Footer } from './components/Footer';
 import { ArrowUp } from 'lucide-react';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { ShopifyConnectionTest } from '../lib/shopify-test';
 import { isAuthenticated } from './utils/auth';
 
-// Protected Route Component
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
+// Protected Route Component using AuthContext
+function ClientProtectedRoute({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
+  const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
+function AdminProtectedRoute({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,9 +87,8 @@ function PageWrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+function AppContent() {
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -84,6 +113,7 @@ export default function App() {
     <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden overflow-y-visible">
       <Header />
       
+      
       <main className="overflow-visible">
         <PageWrapper>
           <Routes>
@@ -100,12 +130,22 @@ export default function App() {
             <Route path="/privacy-terms" element={<PrivacyTermsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <ClientProtectedRoute>
+                  <ClientDashboard />
+                </ClientProtectedRoute>
+              } 
+            />
             <Route 
               path="/admin" 
               element={
-                <ProtectedRoute>
+                <AdminProtectedRoute>
                   <AdminDashboard />
-                </ProtectedRoute>
+                </AdminProtectedRoute>
               } 
             />
           </Routes>
@@ -131,5 +171,13 @@ export default function App() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
