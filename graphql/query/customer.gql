@@ -6,5 +6,21 @@ query customer($customerAccessToken: String!) {
     lastName
     phone
     acceptsMarketing
+    createdAt
+    tags
+
+    orders(first: 10) {
+      edges {
+        node {
+          id
+          name
+          processedAt
+          totalPrice {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
   }
 }
